@@ -1,0 +1,41 @@
+#!/bin/bash
+OPTIND=1
+prefix=""
+hostname=""
+
+usage() {
+    cat 1>&2 <<EOF
+
+Generates a certificate signing request (CSR)
+
+Specify the hostname with -h, and the filename prefix with -p
+
+For example, "./make-x509 -h www.persea.ca -p persea" will make a key as
+persea.key, a CSR as persea.csr, and will set the CommonName (CN) to 
+www.persea.ca
+EOF
+    exit 1
+}
+
+while getopts "p:h:" opt; do
+    case "$opt" in
+	p) prefix=$OPTARG
+	    ;;
+	h) hostname=$OPTARG
+	    ;;
+    esac
+done
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+
+if [ ! -z "$@" ]; then
+    echo "ERROR: Unknown trailing junk on command-line: $@" 1>&2
+    usage
+fi
+if [ -z "$hostname" ]; then
+    usage
+fi
+if [ -z "$prefix" ]; then
+    usage
+fi
+openssl req -nodes -newkey rsa:2048 -keyout "${prefix}.key" -out "${prefix}.csr" -subj "/CN=${hostname}"
