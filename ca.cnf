@@ -39,19 +39,19 @@ string_mask         = utf8only
 # EDIT THESE LINES TOO
 [ ca_distinguished_name ]
 countryName         = Country Name (2 letter code)
-countryName_default     = CA
+countryName_default     = CHANGEME
 
 stateOrProvinceName     = State or Province Name (full name)
-stateOrProvinceName_default = Saskatchewan
+stateOrProvinceName_default = CHANGEME
 
 localityName            = Locality Name (eg, city)
-localityName_default        = Saskatoon
+localityName_default        = CHANGEME
 
 organizationName            = Organization Name (eg, company)
-organizationName_default    = Persea Systems
+organizationName_default    = CHANGEME
 
 commonName          = Common Name (e.g. server FQDN or YOUR name)
-commonName_default      = Persea Systems CA
+commonName_default      = CHANGEME
 
 ####################################################################
 [ ca_extensions ]

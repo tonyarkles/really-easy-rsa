@@ -4,14 +4,22 @@ if [ -z "$RER_ROOT" ]; then
     exit 1
 fi
 if [ ! -d "$RER_ROOT" ]; then
-    echo "RER_ROOT must point to a directory - \"${RER_ROOT}\$ does not" 1>&2
+    echo "RER_ROOT must point to a directory - \"${RER_ROOT}\" does not" 1>&2
     exit 2
+fi
+if [ ! -f "${RER_ROOT}/ca.cnf" ]; then
+    echo "${RER_ROOT}/ca.cnf does not exist. Copy it from the script directory to ${RER_ROOT} and edit it" 1>&2
+    exit 4
 fi
 if [ -f "${RER_ROOT}/cakey.pem" ]; then
     echo "${RER_ROOT}/cakey.pem already exists. Refusing to overwrite" 1>&2
     exit 3
 fi
-openssl req -x509 -config ./ca.cnf -newkey rsa:4096 -sha256 -nodes -batch -keyout "${RER_ROOT}/cakey.pem" -out "${RER_ROOT}/ca.crt"
+if grep -q CHANGEME "${RER_ROOT}/ca.cnf"; then
+    echo "${RER_ROOT}/ca.cnf contains CHANGEME entries. Fix those first." 1>&2
+    exit 5
+fi
+openssl req -x509 -config "${RER_ROOT}/ca.cnf" -newkey rsa:4096 -sha256 -nodes -batch -keyout "${RER_ROOT}/cakey.pem" -out "${RER_ROOT}/ca.crt"
 touch "${RER_ROOT}/index.txt"
 if [ ! -f "${RER_ROOT}/serial.txt" ]; then
     date "+%Y%m%d%H%M%S" > "${RER_ROOT}/serial.txt"

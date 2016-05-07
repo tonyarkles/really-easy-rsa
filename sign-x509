@@ -34,4 +34,4 @@ if [ ! -f "$csr" ]; then
     exit 5
 fi
 out="${prefix}.crt"
-openssl ca -config ./ca.cnf -policy signing_policy -batch -extensions signing_req -in "${csr}" -out "${out}"
+openssl ca -config "${RER_ROOT}/ca.cnf" -policy signing_policy -batch -extensions signing_req -in "${csr}" -out "${out}"
