@@ -4,7 +4,9 @@
 Three tools to manage some certificates for you:
 
 `make-ca` generates a Certificate Authority key and certificate
+
 `make-x509` generates a key and a Certificate Signing Request for you
+
 `sign-x509` takes you CA key and signs a CSR
 
 # Usage: make-ca
